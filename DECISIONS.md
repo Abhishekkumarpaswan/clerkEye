@@ -81,3 +81,12 @@ scheme rules still need a real source review — every rule keeps its spec-provi
 **D-12 — `tools/` and `uploads/` are local, not part of the app.**
 `tools/` holds a local pnpm binary (the sandbox could not write to a global prefix);
 `uploads/` holds the original starter-pack files. Both are gitignored.
+
+**D-13 — `cacheComponents` (Next 16 Cache Components / PPR) turned off.**
+The create-next-app default enables `cacheComponents`, which rejects the per-route
+`export const dynamic = "force-dynamic"` segment config with a 500 error. Our API routes
+must read env and request bodies per request, so `cacheComponents` and
+`partialPrefetching` are removed from `next.config.ts`, `reactStrictMode` is enabled, and
+`/api/*` responses are sent with `Cache-Control: no-store` plus
+`X-Content-Type-Options: nosniff`. `Referrer-Policy: no-referrer` is set globally so
+source links never leak anything.
