@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620">
+    <rect width="900" height="620" fill="#fdfcf8" />
+    <rect x="18" y="18" width="864" height="584" fill="none" stroke="#c9c9c9" stroke-width="2" />
+    
+  
+    <rect x="0" y="0" width="900" height="86" fill="#1f5b3a" />
+    <text x="40" y="38" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="bold" fill="#ffffff">OFFICE OF THE TEHSILDAR, THANESAR</text>
+    <text x="40" y="66" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#e6eef8">Income certificate — specimen</text>
+    <text x="860" y="66" text-anchor="end" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" opacity="0.85">SAMPLE — NOT A REAL DOCUMENT</text>
+  
+  <text x="60" y="130" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="15" fill="#5a5a5a">Certificate No. SAMPLE/IC/2026/0042 (fictional)</text>
+  <text x="60" y="158" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="15" fill="#5a5a5a">Date of issue: 15/04/2026</text>
+  <text x="60" y="196" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="16" fill="#1b1b1b">This is to certify that the annual income of the family of</text>
+  <text x="60" y="232" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="21" font-weight="bold" fill="#1b1b1b">Rajesh Kumar Verma</text>
+  <text x="60" y="262" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="16" fill="#1b1b1b">S/O Mohan Lal Verma</text>
+  <text x="60" y="292" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="16" fill="#1b1b1b">Address: H.No 42, Near Bus Stand, Thanesar, Kurukshetra, Haryana — PIN 136118</text>
+  <text x="60" y="328" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="16" fill="#1b1b1b">is Rs. 96,000 (Rupees ninety-six thousand only) per year.</text>
+  <text x="60" y="370" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">This certificate is issued for scholarship purposes. Validity as per the issuing authority's rules.</text>
+  <text x="60" y="440" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Tehsildar, Thanesar (specimen signature)</text>
+  <line x1="60" y1="455" x2="300" y2="455" stroke="#c9c9c9" stroke-width="1" />
+
+    <text x="450" y="580" text-anchor="middle" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="13" fill="#5a5a5a">ClerkEye demo packet · synthetic data · specimen only</text>
+  </svg>

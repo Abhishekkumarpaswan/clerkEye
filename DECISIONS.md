@@ -241,3 +241,60 @@ with a `romanized` field so the script path is exercised in the demo too.
 `tests/i18n.test.ts` (missing keys, empty strings, rule labels, remedy text). Rule labels
 stay English inside `schemes/*.json` — the scheme file is data — and `ruleLabel()`
 prefers the translated `rule.<id>.label` when present.
+
+---
+
+## M3 — Extraction API, provider adapter, fixtures
+
+**D-36 — The sample document images are generated, not downloaded.**
+`scripts/generate-fixtures.mjs` (`pnpm fixtures:images`) draws four SVG templates and
+renders them to PNG with `sharp` (SPEC.md §14.5). Every value is invented and each image
+carries a "SAMPLE — NOT A REAL DOCUMENT" banner. The SVGs are kept next to the PNGs so
+they can be tweaked without touching the script. The Devanagari line on the Aadhaar
+template needs a Devanagari font; in this sandbox the font had to be made visible to
+fontconfig (`FONTCONFIG_FILE=...`), so the PNGs are committed and regenerating is
+optional. Without such a font, the Hindi line renders as boxes — a cosmetic issue only,
+because the PNGs are committed.
+
+**D-37 — No provider SDKs; both providers are plain `fetch` calls.**
+`lib/llm/gemini.ts` and `lib/llm/anthropic.ts` post to the documented REST endpoints with
+a 45 s timeout, discard the provider's error body (it can echo the image or the fields),
+and hand raw JSON to the caller. No key, endpoint or model name is in source:
+`LLM_MODEL`, `LLM_PROVIDER` and the keys come from `lib/env.ts`.
+
+**D-38 — Adapter contract separates "read" from "trust".**
+`LlmAdapter.extract` returns `unknown` on purpose: nothing downstream can use it before
+`ExtractedDocumentSchema.parse` runs. The same shape is used for `explain`.
+
+**D-39 — Sanitisation runs *before* schema validation, and fails closed.**
+`lib/extract/sanitize.ts` deep-copies the raw response, masks any 12-digit Aadhaar number
+and any 7+ digit run (keeping the last four), truncates `accountLast4` to four digits, caps
+`qualityNote` at 120 characters, and only then validates with Zod. A final assertion
+throws if a full Aadhaar number somehow survived. Doing it the other way round made the
+strict `accountLast4` schema reject the response before it could be cleaned (found by a
+test). The route reports only the *number* of redactions, never what was removed.
+
+**D-40 — The uploaded document type wins over the model's `docType`.**
+The route always returns `docType` equal to the requested type, so a confused model can
+never quietly change which scheme rule runs.
+
+**D-41 — Demo mode is the default (`DEMO_MODE` unset ⇒ `1`).**
+With no `.env.local` at all, `/api/extract` serves fixtures after a 600–900 ms delay, so
+the app is fully demonstrable with no key and no network. A request may also name a
+`fixtureId` to load a specific packet (used by "Try with sample packet"). Unknown
+document or packet ids return typed errors, never a fabricated document.
+
+**D-42 — Route accepts both JSON and multipart, and only one image per call.**
+Multipart is for real uploads from the wizard; JSON is for tests and for the fixture path.
+One image and one document type per call keeps each request small and lets the client run
+the four documents in parallel (SPEC.md §10).
+
+**D-43 — PDFs are first-page only, and rasterisation stays in the browser.**
+`lib/extract/preprocess.ts` records the limit (`PDF_FIRST_PAGE_ONLY`) and the wizard asks
+the user to confirm the preview before sending. Keeping rasterisation client-side is what
+lets document data stop at the extraction boundary instead of the server needing its own
+PDF pipeline.
+
+**D-44 — No logging anywhere in the extraction path.**
+No `console.*` in `lib/llm`, `lib/extract` or the route. Errors are mapped to six typed
+codes with fixed, user-facing messages; a provider's own message is never forwarded.

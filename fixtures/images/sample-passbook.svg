@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="620" viewBox="0 0 900 620">
+    <rect width="900" height="620" fill="#fdfcf8" />
+    <rect x="18" y="18" width="864" height="584" fill="none" stroke="#c9c9c9" stroke-width="2" />
+    
+  
+    <rect x="0" y="0" width="900" height="86" fill="#7a1f2b" />
+    <text x="40" y="38" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="bold" fill="#ffffff">STATE BANK OF INDIA</text>
+    <text x="40" y="66" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#e6eef8">Savings bank passbook, first page — specimen branch</text>
+    <text x="860" y="66" text-anchor="end" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="13" font-weight="bold" fill="#ffffff" opacity="0.85">SAMPLE — NOT A REAL DOCUMENT</text>
+  
+  
+    <text x="60" y="150" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Account holder</text>
+    <text x="330" y="150" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="bold" fill="#1b1b1b">Rajesh Kumar Verma</text>
+    <line x1="60" y1="162" x2="840" y2="162" stroke="#c9c9c9" stroke-width="1" />
+  
+  
+    <text x="60" y="196" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Account number</text>
+    <text x="330" y="196" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="normal" fill="#1b1b1b">XXXXXXXX4821</text>
+    <line x1="60" y1="208" x2="840" y2="208" stroke="#c9c9c9" stroke-width="1" />
+  
+  
+    <text x="60" y="242" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">IFSC</text>
+    <text x="330" y="242" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="normal" fill="#1b1b1b">SBIN0001234</text>
+    <line x1="60" y1="254" x2="840" y2="254" stroke="#c9c9c9" stroke-width="1" />
+  
+  
+    <text x="60" y="288" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Branch</text>
+    <text x="330" y="288" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="normal" fill="#1b1b1b">Thanesar, Kurukshetra</text>
+    <line x1="60" y1="300" x2="840" y2="300" stroke="#c9c9c9" stroke-width="1" />
+  
+  
+    <text x="60" y="334" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Address</text>
+    <text x="330" y="334" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="normal" fill="#1b1b1b">H.No 42, Near Bus Stand, Thanesar</text>
+    <line x1="60" y1="346" x2="840" y2="346" stroke="#c9c9c9" stroke-width="1" />
+  
+  
+    <text x="60" y="380" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="14" fill="#5a5a5a">Account opened</text>
+    <text x="330" y="380" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="20" font-weight="normal" fill="#1b1b1b">02/07/2023</text>
+    <line x1="60" y1="392" x2="840" y2="392" stroke="#c9c9c9" stroke-width="1" />
+  
+  <text x="60" y="440" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="13" fill="#5a5a5a">Only the last four digits of the account number are shown, by design.</text>
+
+    <text x="450" y="580" text-anchor="middle" font-family="DejaVu Sans, Noto Sans Devanagari, Arial, sans-serif" font-size="13" fill="#5a5a5a">ClerkEye demo packet · synthetic data · specimen only</text>
+  </svg>

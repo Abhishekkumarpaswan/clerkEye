@@ -12,7 +12,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "eval:matcher": "vitest run --config vitest.eval.config.ts eval/matcher.eval.ts",
-    "eval:pipeline": "vitest run --config vitest.eval.config.ts eval/pipeline.eval.ts"
+    "eval:pipeline": "vitest run --config vitest.eval.config.ts eval/pipeline.eval.ts",
+    "fixtures:images": "node scripts/generate-fixtures.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
@@ -37,6 +38,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.4.3",
+    "sharp": "^0.35.5",
     "tailwindcss": "^4",
     "typescript": "^5",
     "vite-tsconfig-paths": "^6.0.0",
