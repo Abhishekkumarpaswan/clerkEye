@@ -14,6 +14,9 @@ import path from "node:path";
 import sharp from "sharp";
 
 const OUT_DIR = path.join(process.cwd(), "fixtures", "images");
+// Next serves static assets from public/, so the same bytes are copied there for
+// the demo previews. `fixtures/images` stays the source of truth for regeneration.
+const PUBLIC_DIR = path.join(process.cwd(), "public", "fixtures");
 
 const W = 900;
 const H = 620;
@@ -128,11 +131,13 @@ const images = [
 ];
 
 await mkdir(OUT_DIR, { recursive: true });
+await mkdir(PUBLIC_DIR, { recursive: true });
 for (const [name, svg] of images) {
   const png = await sharp(Buffer.from(svg))
     .png({ compressionLevel: 9, palette: true })
     .toBuffer();
   await writeFile(path.join(OUT_DIR, name), png);
+  await writeFile(path.join(PUBLIC_DIR, name), png);
   // Keep the SVG sources next to the PNGs so the images can be regenerated or
   // tweaked without touching this script.
   await writeFile(path.join(OUT_DIR, name.replace(/\.png$/, ".svg")), svg, "utf8");

@@ -6,14 +6,6 @@ const nextConfig: NextConfig = {
   // entirely client-side. See DECISIONS.md D-13.
   reactStrictMode: true,
   poweredByHeader: false,
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
   async headers() {
     return [
       {

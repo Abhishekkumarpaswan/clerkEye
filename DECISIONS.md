@@ -298,3 +298,78 @@ PDF pipeline.
 **D-44 — No logging anywhere in the extraction path.**
 No `console.*` in `lib/llm`, `lib/extract` or the route. Errors are mapped to six typed
 codes with fixed, user-facing messages; a provider's own message is never forwarded.
+
+---
+
+## M4–M5 — Wizard, results, fixes, explain, voice, print
+
+**D-45 — Tailwind runs through PostCSS, and source detection is explicit.**
+create-next-app on Next 16 wires Tailwind v4 through the `@tailwindcss/turbopack` CSS
+loader. In this environment that loader made the dev server hang on the first page
+compile and consume all available memory. Substituted the standard
+`@tailwindcss/postcss` pipeline (`postcss.config.mjs`), which produces the same CSS.
+The second half of the problem was Tailwind v4's automatic source detection: it walks the
+project directory, and this repo contains large local-only folders (`node_modules`,
+`tools/`, `uploads/`). `app/globals.css` now declares its sources explicitly
+(`@import "tailwindcss" source(none)` plus `@source "../app"`, `"../components"`,
+`"../lib"`). First page compile dropped from "never finishes" to ~70 ms. Recorded here
+because it is a deviation from the generated scaffold.
+
+**D-46 — Demo previews are served from `public/fixtures/`.**
+`fixtures/images/` stays the source of truth for regeneration; `pnpm fixtures:images` also
+writes the same PNGs to `public/fixtures/` so the browser can display them. Both copies
+are committed.
+
+**D-47 — All wizard state is `useState` in one client component.**
+`components/check-wizard.tsx` holds the four steps in memory. No Zustand: the state is
+small, one component owns it, and adding a store would not survive a reload either. No
+localStorage, sessionStorage, cookie, IndexedDB or URL parameter carries document data —
+a reload clears everything, which is the guarantee PRIVACY.md makes.
+
+**D-48 — Matching cannot run before confirmation.**
+`runChecks` is only called from a `useMemo` guarded by `step === "results" | "fix"` **and**
+`confirmed`. The confirm step's checkbox is mandatory and the Continue button is disabled
+until it is ticked, so there is no path to results from unconfirmed values.
+
+**D-49 — Uploaded images are resized client-side and never re-uploaded after redaction.**
+`components/image-utils.ts` resizes to ≤1600 px JPEG q0.8 on a canvas. The redaction tool
+draws black boxes on a canvas and returns a new JPEG; the unredacted data URL is replaced
+in state, so only the covered image is ever sent.
+
+**D-50 — PDFs: first page only, no bundled PDF renderer.**
+`preparePdfFirstPage` tries `createImageBitmap`; if the browser cannot decode the PDF it
+returns `null` and the card asks for a photo instead. Adding pdf.js (≈1 MB) for a v1
+demo was not worth it — recorded as a limitation rather than a silent failure.
+
+**D-51 — Explanations are computed on the client from templates, then optionally replaced.**
+The wizard always has `explainAll(lang, findings)` available immediately (no loading
+state, no network dependency). It then calls `/api/explain`; if that route is disabled
+(default) it answers `source: "template"`, and the UI keeps the templates. Only a
+`source: "llm"` answer replaces text, keyed by row key and invalidated whenever the
+finding set changes. `/api/explain` validates input and output with Zod, drops any
+`ruleId` it did not send, drops text that promises an outcome or contains a URL, and
+always answers `ok: true` so the client has no failure path.
+
+**D-52 — Voice degrades honestly.**
+`components/use-speech.ts` picks a voice matching `hi-IN` / `en-IN`, speaks at rate 0.92
+for Hindi, and shows "Voice is not available on this device." when no matching voice
+exists — the button never pretends to work. A human still has to test Hindi voice on the
+demo device (flagged in `START_HERE.md` and `PRIVACY.md`).
+
+**D-53 — Print is a separate, always-rendered sheet.**
+`components/print-sheet.tsx` renders the checklist, the fixes, the unverifiable items and
+(only for a name-variation WARNING) the declaration template. `@media print` hides the
+whole app UI and shows this sheet in black and white; status is carried by icon plus the
+written status word, never by colour. `window.print()` is the only trigger. A plain-text
+download of the checklist is offered as well, for phones where printing is awkward.
+
+**D-54 — The declaration template is only offered for name-variation WARNINGs.**
+SPEC.md §12.3 requires exactly that and forbids it for CRITICAL findings. The template
+carries its disclaimer both on screen and on the printed sheet.
+
+**D-55 — Accessibility specifics.**
+Every status is icon + colour + text. The step indicator announces
+`Step n of 4`. The upload inputs are real file inputs with `capture="environment"` and
+`sr-only` styling, tied to labels. Focus moves to the page heading on step change. The
+results matrix uses a real `<table>` with `<caption>` and `scope`, and collapses to a
+list of buttons under `md`. Tap targets are ≥44 px (`min-h-11`).

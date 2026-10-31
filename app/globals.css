@@ -1,4 +1,9 @@
-@import "tailwindcss";
+/* Explicit sources: automatic detection walks the whole working directory
+   (including local-only folders), which is slow and unnecessary. */
+@import "tailwindcss" source(none);
+@source "../app";
+@source "../components";
+@source "../lib";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -173,5 +178,83 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/* ---- Print: one page, black and white, no background colours ---- */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 14mm;
+  }
+  html,
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+  }
+  body * {
+    box-shadow: none !important;
+  }
+  .screen-only,
+  header,
+  nav,
+  button {
+    display: none !important;
+  }
+  .print-sheet {
+    display: block !important;
+    max-width: none;
+  }
+  .print-head h1 {
+    font-size: 16pt;
+    margin: 0 0 2mm;
+  }
+  .print-head p {
+    margin: 0 0 4mm;
+    font-size: 9pt;
+  }
+  .print-sheet h2 {
+    font-size: 12pt;
+    margin: 5mm 0 2mm;
+    border-bottom: 0.4mm solid #000;
+    padding-bottom: 1mm;
+  }
+  .print-list {
+    margin: 0;
+    padding-left: 5mm;
+  }
+  .print-list li {
+    margin: 0 0 2.5mm;
+    page-break-inside: avoid;
+    line-height: 1.45;
+  }
+  .print-icon {
+    width: 9pt;
+    height: 9pt;
+    vertical-align: -1pt;
+    color: #000 !important;
+  }
+  .print-status {
+    font-weight: 600;
+  }
+  .print-muted {
+    font-size: 9pt;
+    color: #333 !important;
+  }
+  .print-declaration {
+    page-break-before: always;
+  }
+  .print-declaration pre {
+    white-space: pre-wrap;
+    font-family: inherit;
+    font-size: 10pt;
+    border: 0.3mm solid #000;
+    padding: 3mm;
+  }
+  footer.print-muted {
+    margin-top: 6mm;
+    border-top: 0.3mm solid #000;
+    padding-top: 2mm;
   }
 }
