@@ -20,7 +20,11 @@ import { ResultMatrixStub } from "./helpers/result-matrix-stub";
  */
 
 function render(node: React.ReactElement, lang: "en" | "hi" = "en") {
-  return renderToStaticMarkup(createElement(LangProvider, { initialLang: lang }, node));
+  const Provider = LangProvider as unknown as React.FC<{
+    children?: React.ReactNode;
+    initialLang?: "en" | "hi";
+  }>;
+  return renderToStaticMarkup(createElement(Provider, { initialLang: lang }, node));
 }
 
 describe("landing page", () => {

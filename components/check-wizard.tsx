@@ -39,6 +39,7 @@ import {
 } from "@/components/image-utils";
 import { DOC_TYPES, type DocType, type FieldName, type ExtractionResponse } from "@/lib/extract/schemas";
 import { checkUploadable } from "@/lib/extract/preprocess";
+import { canSendForExtraction, containsLongNumber, maskNumbers } from "@/lib/extract/guard";
 import { DEFAULT_PACKET_ID, PACKETS } from "@/lib/fixtures";
 import { runChecks, summariseFindings, NSP_POST_MATRIC } from "@/lib/rules";
 import { explainAll, type Explanation } from "@/lib/explain/templates";
@@ -111,9 +112,23 @@ export function CheckWizard({ autoLoadSample = false }: { autoLoadSample?: boole
           return;
         }
 
+        // Defence in depth: mask any long number that reached the browser, even
+        // though the server already scrubs them (SPEC.md §16 M6).
+        const document = json.document;
+        let hidNumber = false;
+        for (const field of Object.values(document.fields) as Array<
+          { value: string | null } | undefined
+        >) {
+          if (field && typeof field.value === "string" && containsLongNumber(field.value)) {
+            field.value = maskNumbers(field.value);
+            hidNumber = true;
+          }
+        }
+        if (hidNumber) setUploadMessage(t("upload.hiddenNumber"));
+
         updateEntry(docType, {
           status: "ready",
-          document: json.document,
+          document,
           demo: json.demo,
           fixtureId: json.fixtureId,
           editedFields: [],
@@ -122,7 +137,7 @@ export function CheckWizard({ autoLoadSample = false }: { autoLoadSample?: boole
         updateEntry(docType, { status: "error", errorCode: "NETWORK" });
       }
     },
-    [updateEntry],
+    [updateEntry, t],
   );
 
   const loadSample = useCallback(
@@ -187,7 +202,22 @@ export function CheckWizard({ autoLoadSample = false }: { autoLoadSample?: boole
           redacted: docType !== "AADHAAR",
           demo: false,
           fixtureId: null,
+          status: "idle",
         });
+
+        // An Aadhaar card is not sent until the number is covered (M6).
+        const gate = canSendForExtraction({
+          docType,
+          redacted: docType !== "AADHAAR",
+          demo: false,
+          hasImage: true,
+        });
+
+        if (!gate.allowed) {
+          setUploadMessage(t("upload.redact.required"));
+          setRedacting(docType);
+          return;
+        }
 
         await extract(docType, prepared, null);
       } catch {

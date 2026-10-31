@@ -373,3 +373,34 @@ Every status is icon + colour + text. The step indicator announces
 `sr-only` styling, tied to labels. Focus moves to the page heading on step change. The
 results matrix uses a real `<table>` with `<caption>` and `scope`, and collapses to a
 list of buttons under `md`. Tap targets are ≥44 px (`min-h-11`).
+
+---
+
+## M6 — Privacy hardening
+
+**D-56 — An Aadhaar card cannot be sent until the number is covered.**
+`lib/extract/guard.ts` (`canSendForExtraction`) is the client-side gate: choosing a file
+for the Aadhaar card opens the redaction tool instead of sending anything, and the card is
+only sent after a box has been drawn. Sample documents skip the gate because they are
+synthetic and carry no number. This is the enforceable version of "block upload of
+unredacted full numbers if detected" — we cannot OCR on the client, so we enforce the
+*procedure* instead of pretending to detect it.
+
+**D-57 — The 12-digit guard runs twice.**
+Server: `sanitizeExtraction` scrubs before validation and fails closed if a full Aadhaar
+number survives. Client: every field value that arrives is re-checked with
+`containsLongNumber` / `maskNumbers` and masked again, and the user is told a number was
+hidden. Neither layer can put a 12-digit run into React state, the matrix, or the printed
+checklist.
+
+**D-58 — A test enforces the privacy rules, not just a document.**
+`tests/privacy.test.ts` walks `app/`, `components/` and `lib/` and fails the build if it
+finds a `console.*` call, a storage API (`localStorage`, `sessionStorage`,
+`document.cookie`, `indexedDB`, `navigator.sendBeacon`), or a `fetch()` in a client
+component that does not target `/api/…`. It also asserts the demo fixtures contain no
+12-digit number and that every generated sample image carries the SAMPLE banner.
+
+**D-59 — `PRIVACY.md` states the limits of the promise, not only the promise.**
+It names the one place data genuinely leaves the browser (the extraction call to the
+configured provider), says plainly that the provider's terms apply, and explains how to
+avoid it (`DEMO_MODE=1`). It also lists what the app deliberately never requests.

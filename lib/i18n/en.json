@@ -229,5 +229,7 @@
   "fix.nothing": "Nothing needs fixing in the documents you uploaded.",
   "fix.download": "Download checklist (text)",
   "fields.institute": "Name of your institute",
-  "fix.explanationLlm": "Rewritten by the explanation model"
+  "fix.explanationLlm": "Rewritten by the explanation model",
+  "upload.redact.required": "Cover your Aadhaar number before we read the card. Full Aadhaar numbers are never read or stored.",
+  "upload.hiddenNumber": "A long number was found in what we read, so we hid it. Please check the fields below."
 }
