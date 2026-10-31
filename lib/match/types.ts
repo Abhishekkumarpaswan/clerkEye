@@ -64,6 +64,7 @@ export const MismatchType = {
   ADDRESS_VARIATION: "ADDRESS_VARIATION",
   CERT_EXPIRED: "CERT_EXPIRED",
   UNREADABLE: "UNREADABLE",
+  FIELD_DIFFERENT: "FIELD_DIFFERENT",
 } as const;
 
 export type MismatchType = (typeof MismatchType)[keyof typeof MismatchType];

@@ -1,0 +1,111 @@
+{
+  "scheme": "nsp-post-matric",
+  "lastReviewed": "FILL-IN-DATE",
+  "notes": "Each rule carries its own source and a verified flag. Nothing here is a claim about the current official guideline unless verified is true. Rules marked verified:false are shown with an 'unverified' badge in the UI and must be reviewed by a human against the official scheme guideline before they are presented as requirements.",
+  "rules": [
+    {
+      "id": "R-001",
+      "type": "field_match",
+      "label": "Bank account holder name must match applicant name",
+      "left": { "doc": "BANK_PASSBOOK", "field": "bankAccountHolder" },
+      "right": { "doc": "AADHAAR", "field": "applicantName" },
+      "failSeverity": "CRITICAL",
+      "source": {
+        "url": "https://Scholarships.Gov.In/public/schemeGuidelines/ladakh/ladakh_3022_G.pdf",
+        "note": "NSP scheme guideline states an application is rejected if the bank account holder's name does not match the applicant's name. Re-verify applicability to the target scheme.",
+        "verified": true
+      }
+    },
+    {
+      "id": "R-002",
+      "type": "unverifiable_note",
+      "label": "Bank account must be Aadhaar-seeded / NPCI-mapped for payment",
+      "howToCheck": "Ask the bank branch or check seeding status through the bank/NPCI process.",
+      "source": {
+        "url": "",
+        "note": "Commonly cited in NSP guidance; add official URL.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-003",
+      "type": "field_match",
+      "label": "Applicant name should be consistent across Aadhaar, marksheet and income certificate",
+      "pairs": [
+        ["AADHAAR", "MARKSHEET"],
+        ["AADHAAR", "INCOME_CERT"]
+      ],
+      "field": "applicantName",
+      "failSeverity": "WARNING",
+      "source": {
+        "url": "",
+        "note": "TODO: confirm exact requirement in scheme guideline.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-004",
+      "type": "validity",
+      "label": "Income certificate must be within its validity period",
+      "doc": "INCOME_CERT",
+      "field": "issueDate",
+      "max_age_months": null,
+      "source": {
+        "url": "",
+        "note": "TODO: set from official guideline; null → UNVERIFIABLE.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-005",
+      "type": "field_match",
+      "label": "Father's name should be spelled the same on Aadhaar and the income certificate",
+      "left": { "doc": "AADHAAR", "field": "fatherName" },
+      "right": { "doc": "INCOME_CERT", "field": "fatherName" },
+      "failSeverity": "WARNING",
+      "source": {
+        "url": "",
+        "note": "TODO: cross-document consistency check, not a confirmed scheme requirement. Confirm in the official guideline before presenting it as one.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-006",
+      "type": "field_match",
+      "label": "Date of birth should match on Aadhaar and the marksheet",
+      "left": { "doc": "AADHAAR", "field": "dob" },
+      "right": { "doc": "MARKSHEET", "field": "dob" },
+      "failSeverity": "CRITICAL",
+      "source": {
+        "url": "",
+        "note": "TODO: cross-document consistency check, not a confirmed scheme requirement. Confirm in the official guideline before presenting it as one.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-007",
+      "type": "field_match",
+      "label": "Address PIN code should be the same on Aadhaar and the income certificate",
+      "left": { "doc": "AADHAAR", "field": "address" },
+      "right": { "doc": "INCOME_CERT", "field": "address" },
+      "failSeverity": "WARNING",
+      "maxSeverity": "WARNING",
+      "source": {
+        "url": "",
+        "note": "TODO: cross-document consistency check. Many schemes do not require address equality, so it is capped at WARNING.",
+        "verified": false
+      }
+    },
+    {
+      "id": "R-008",
+      "type": "unverifiable_note",
+      "label": "Your institute must verify the application on the portal before the deadline",
+      "howToCheck": "Ask your institute's scholarship cell to confirm they have verified your application, and note the last date on the portal.",
+      "source": {
+        "url": "",
+        "note": "Commonly cited; add official URL and deadline from the current scheme guideline.",
+        "verified": false
+      }
+    }
+  ]
+}

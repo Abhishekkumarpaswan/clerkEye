@@ -1,0 +1,180 @@
+{
+  "id": "clean",
+  "title": "Everything agrees",
+  "description": "Four consistent synthetic documents. Every check should pass or be unverifiable (bank seeding and institute verification cannot be seen in documents).",
+  "scheme": "nsp-post-matric",
+  "images": {
+    "AADHAAR": "/fixtures/images/sample-aadhaar.png",
+    "INCOME_CERT": "/fixtures/images/sample-income.png",
+    "MARKSHEET": "/fixtures/images/sample-marksheet.png",
+    "BANK_PASSBOOK": "/fixtures/images/sample-passbook.png"
+  },
+  "documents": [
+    {
+      "docType": "AADHAAR",
+      "qualityNote": null,
+      "fields": {
+        "applicantName": {
+          "value": "Rajesh Kumar Verma",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.97
+        },
+        "fatherName": {
+          "value": "Mohan Lal Verma",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.94
+        },
+        "dob": {
+          "value": "12/03/2004",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.96
+        },
+        "address": {
+          "value": "H.No 42, Near Bus Stand, Thanesar, Kurukshetra, Haryana",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.9
+        },
+        "pin": {
+          "value": "136118",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.95
+        }
+      }
+    },
+    {
+      "docType": "INCOME_CERT",
+      "qualityNote": null,
+      "fields": {
+        "applicantName": {
+          "value": "राजेश कुमार वर्मा",
+          "romanized": "Rajesh Kumar Verma",
+          "script": "devanagari",
+          "confidence": 0.88
+        },
+        "fatherName": {
+          "value": "मोहन लाल वर्मा",
+          "romanized": "Mohan Lal Verma",
+          "script": "devanagari",
+          "confidence": 0.84
+        },
+        "address": {
+          "value": "H.No 42, Near Bus Stand, Thanesar, Kurukshetra, Haryana",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.82
+        },
+        "pin": {
+          "value": "136118",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.9
+        },
+        "issueDate": {
+          "value": "15/04/2026",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.93
+        }
+      }
+    },
+    {
+      "docType": "MARKSHEET",
+      "qualityNote": null,
+      "fields": {
+        "applicantName": {
+          "value": "Rajesh Kumar Verma",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.92
+        },
+        "fatherName": {
+          "value": "Mohan Lal Verma",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.88
+        },
+        "dob": {
+          "value": "12 Mar 2004",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.9
+        }
+      }
+    },
+    {
+      "docType": "BANK_PASSBOOK",
+      "qualityNote": null,
+      "fields": {
+        "bankAccountHolder": {
+          "value": "Rajesh Kumar Verma",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.95
+        },
+        "ifsc": {
+          "value": "SBIN0001234",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.93
+        },
+        "accountLast4": {
+          "value": "4821",
+          "romanized": null,
+          "script": "latin",
+          "confidence": 0.9
+        }
+      }
+    }
+  ],
+  "expected": [
+    {
+      "ruleId": "R-001",
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-002",
+      "status": "UNVERIFIABLE"
+    },
+    {
+      "ruleId": "R-003",
+      "documents": [
+        "AADHAAR",
+        "MARKSHEET"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-003",
+      "documents": [
+        "AADHAAR",
+        "INCOME_CERT"
+      ],
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-004",
+      "status": "UNVERIFIABLE"
+    },
+    {
+      "ruleId": "R-005",
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-006",
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-007",
+      "status": "MATCH"
+    },
+    {
+      "ruleId": "R-008",
+      "status": "UNVERIFIABLE"
+    }
+  ]
+}

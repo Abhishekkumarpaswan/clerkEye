@@ -172,3 +172,72 @@ in `schemes/nsp-post-matric.json` does that today.
 `checkValidity` returns UNVERIFIABLE whenever the rule's `maxAgeMonths` is null, which is
 the case in the shipped scheme file. A printed `validUntil` date always decides over the
 age rule. The reference date is injected, so the function stays pure and testable.
+
+---
+
+## M2 — Rules, remedies, i18n and explanations
+
+**D-26 — `schemes/nsp-post-matric.json` ships the four spec rules verbatim, plus four consistency checks.**
+R-001 to R-004 are copied from SPEC.md §12.1 with their exact sources and `verified`
+flags; R-004's `max_age_months` stays `null`, so the validity check reports
+UNVERIFIABLE rather than inventing a limit. R-005 to R-008 were added because SPEC.md §4
+requires father's name, DOB and address to be compared, and the four sample rules cover
+none of them: two `field_match` consistency checks (father's name, DOB, address PIN) and
+one more `unverifiable_note` (institute verification, from SPEC.md §2). Every added rule
+has `url: ""`, `verified: false` and a note that starts with `TODO`, so the UI badge says
+"unverified". **No source, quote or remedy was invented, and `lastReviewed` is left as
+the literal `FILL-IN-DATE` for a human to replace.**
+
+**D-27 — `Finding` gains `rowKey` and `documents`; `left`/`right` are optional.**
+A rule can produce several rows (R-003 runs on two document pairs), so each finding
+needs a stable key for React and for the matrix. Portal-level notes have no left/right
+side at all — forcing a fake document into `left` would have been misleading — hence
+`documents: DocType[]` (empty for portal notes) and optional sides. Everything else in
+the SPEC.md §9 contract is unchanged.
+
+**D-28 — `applicantName` is optional in the extraction schema.**
+A bank passbook does not print an applicant name. Making the field required would have
+forced the extractor to invent one, which SPEC.md §10 rule 1 forbids.
+
+**D-29 — A rule decides the severity of its own failure.**
+`failSeverity` is applied when the underlying comparison returns WARNING or CRITICAL;
+MATCH and UNVERIFIABLE always pass through unchanged. `maxSeverity`, when present, is a
+ceiling on the result. So the same name difference is a red reject-risk under R-001
+(bank vs Aadhaar) and an amber warning under R-003 (Aadhaar vs marksheet), which is what
+the source notes actually support.
+
+**D-30 — Missing or unreadable values become UNVERIFIABLE rows, never silent passes.**
+If a document is not uploaded, the affected rule still produces a row saying so, so the
+matrix shows the gap instead of hiding it. Same for a blank or unreadable field.
+
+**D-31 — Address comparison includes the separate PIN field.**
+Certificates often print the PIN on its own line, so `compareSides` appends the `pin`
+value to the address text before comparing. Without this, a perfectly correct address
+with a separately-printed PIN looked like it had no PIN (caught by the fixture tests).
+
+**D-32 — Remedies are data, text is i18n.**
+`lib/remedies/remedies.ts` maps a finding to a remedy id and carries `reviewed: false`
+on every entry (SPEC.md §12.2). The three lines of copy ("what / where / carry") live in
+`lib/i18n/en.json` and `hi.json` as `remedy.<id>.what|where|carry`, so a remedy cannot
+exist in one language only — the i18n test enforces it. No remedy states a fee, a
+deadline, a number of days, or a promise of outcome; each fix card adds the line "check
+what your office accepts".
+
+**D-33 — Explanations are template-generated, bilingually, from structured finding data.**
+`lib/explain/templates.ts` composes sentences from `explain.*` keys plus the two values,
+the documents and the mismatch type. It never reuses the English `reason` string for
+Hindi. `/api/explain` (M5) may rewrite these, but this path always works, offline, with
+the LLM disabled.
+
+**D-34 — Fixture files are validated at import and carry their expected statuses.**
+`lib/fixtures.ts` parses every packet with Zod and `tests/rules.test.ts` asserts each
+documented expectation. The three packets are `clean`, `name-abbreviation` (amber
+initials on the marksheet) and `bank-name-mismatch` (the demo packet, red R-001).
+All values are synthetic; the income certificate in the `clean` packet is in Devanagari
+with a `romanized` field so the script path is exercised in the demo too.
+
+**D-35 — i18n is a flat key/value pair of JSON files with one shared key set.**
+212 keys at the end of M2, identical in both languages, checked by
+`tests/i18n.test.ts` (missing keys, empty strings, rule labels, remedy text). Rule labels
+stay English inside `schemes/*.json` — the scheme file is data — and `ruleLabel()`
+prefers the translated `rule.<id>.label` when present.
