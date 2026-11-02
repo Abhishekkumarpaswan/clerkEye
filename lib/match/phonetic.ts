@@ -26,6 +26,8 @@ const FOLDS: Array<[RegExp, string]> = [
   [/z/g, "j"],
   [/q/g, "k"],
   [/x/g, "ks"],
+  [/ng$/g, "n"],
+  [/nh$/g, "n"],
 ];
 
 export function foldConsonants(token: string): string {

@@ -52,11 +52,15 @@ export const ABBREVIATIONS: Record<string, string> = {
   mohamad: "mohammad",
   muhammed: "mohammad",
   kr: "kumar",
-  km: "kumar", // TODO(human): confirm "Km." is used for Kumar in the target state
   sing: "singh",
-  dev: "devi", // TODO(human): "Dev" is also a standalone surname; review before demo
-  ash: "ashok",
 };
+
+/**
+ * Deliberately NOT in the map, because expanding them would be an inference:
+ * "km" (could be Kumar), "dev" (usually a real middle name or surname, not Devi),
+ * "ash" (could be Ashok or Asha). Removing them was a correction found by the eval
+ * harness — see DECISIONS.md D-61.
+ */
 
 /** Honorifics are matched only at the start of a name, and only as whole tokens. */
 export const NAME_SEPARATORS = /[.,\-_/\\|()]+/g;
@@ -67,8 +71,13 @@ export const NAME_SEPARATORS = /[.,\-_/\\|()]+/g;
  */
 export const TRANSLITERATION_MAP: Array<[RegExp, string]> = [
   [/\bksh/g, "ksh"],
-  [/z/g, "sh"], // HK uses z for श
+  [/c/g, "ch"], // Harvard-Kyoto uses c for च and C for छ
+  [/R/g, "ri"], // HK uses R for ऋ
   [/S/g, "sh"], // HK uses S for ष
+  [/T/g, "t"], // retroflex ट
+  [/D/g, "d"], // retroflex ड
+  [/N/g, "n"], // retroflex ण
+  [/z/g, "sh"], // HK uses z for श
   [/M/g, "n"], // anusvara
   [/A/g, "a"],
   [/I/g, "i"],

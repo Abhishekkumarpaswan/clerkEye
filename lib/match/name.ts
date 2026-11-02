@@ -206,7 +206,10 @@ export function compareNames(a: FieldLike, b: FieldLike): NameComparison {
 
   const usedInitials = alignments.some((item) => item.kind === "initial");
   const droppedTokens = left.tokens.length !== right.tokens.length;
-  const spellingVariants = alignments.some((item) => item.kind === "spelling" || item.kind === "phonetic");
+  // Only a 0.9 "spelling" alignment counts as a variant. A "phonetic" alignment
+  // scores 1.0 — the two spellings are the same name spoken aloud — so it must not
+  // push a would-be MATCH down to a WARNING.
+  const spellingVariants = alignments.some((item) => item.kind === "spelling");
 
   let status: Status;
   let mismatchType: MismatchType | null = null;

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClerkEye — matcher benchmark</title>
+<style>
+  :root { color-scheme: light; }
+  body { font-family: Inter, system-ui, sans-serif; margin: 2rem auto; max-width: 860px; padding: 0 1rem; color: #1b2430; }
+  h1 { font-size: 1.5rem; margin-bottom: .25rem; }
+  h2 { font-size: 1.1rem; margin-top: 2rem; }
+  p.lead, .muted { color: #5b6673; font-size: .9rem; }
+  table { border-collapse: collapse; width: 100%; margin-top: .75rem; font-size: .9rem; }
+  th, td { border: 1px solid #d8dee6; padding: .5rem .6rem; text-align: left; vertical-align: middle; }
+  thead th { background: #f4f6f9; }
+  .bar { display: inline-block; width: 140px; height: 10px; background: #e8ecf2; border-radius: 5px; margin-right: .5rem; overflow: hidden; vertical-align: middle; }
+  .bar span { display: block; height: 100%; background: #2f5aa8; }
+  .bar.base span { background: #9aa6b5; }
+  td.diag { background: #e9f5ec; font-weight: 600; }
+  td.off { background: #fdf1ef; }
+  code { background: #f4f6f9; padding: .1rem .3rem; border-radius: 3px; }
+</style>
+</head>
+<body>
+  <h1>ClerkEye — matching engine benchmark</h1>
+  <p class="lead">1538 labelled name pairs, 7 mutation types.
+  The engine only ever sees two strings; the labels are used for scoring.</p>
+
+  <h2>Overall</h2>
+  <table>
+    <thead><tr><th>Method</th><th>Accuracy (4 classes)</th><th>Macro F1</th></tr></thead>
+    <tbody>
+      <tr>
+        <th scope="row">ClerkEye engine</th>
+        <td>96.4%</td>
+        <td>0.963</td>
+      </tr>
+      <tr>
+        <th scope="row">Baseline: exact string match</th>
+        <td>46.6%</td>
+        <td>0.370</td>
+      </tr>
+      <tr>
+        <th scope="row">Baseline: Levenshtein ≤ 2</th>
+        <td>59.0%</td>
+        <td>0.486</td>
+      </tr></tbody>
+  </table>
+
+  <h2>Accuracy per mutation type</h2>
+  <table>
+    <thead><tr><th>Mutation</th><th>ClerkEye</th><th>Exact match</th><th>Levenshtein ≤ 2</th></tr></thead>
+    <tbody>
+      <tr>
+        <th scope="row">IDENTICAL<br><span class="muted">n = 320</span></th>
+        <td><div class="bar"><span style="width:90.9%"></span></div>90.9%</td>
+        <td><div class="bar base"><span style="width:62.5%"></span></div>62.5%</td>
+        <td><div class="bar base"><span style="width:62.5%"></span></div>62.5%</td>
+      </tr>
+      <tr>
+        <th scope="row">SPELLING_VARIANT<br><span class="muted">n = 200</span></th>
+        <td><div class="bar"><span style="width:86.5%"></span></div>86.5%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+        <td><div class="bar base"><span style="width:98.0%"></span></div>98.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">ABBREVIATED<br><span class="muted">n = 200</span></th>
+        <td><div class="bar"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">DROPPED_MIDDLE<br><span class="muted">n = 149</span></th>
+        <td><div class="bar"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">REORDERED<br><span class="muted">n = 149</span></th>
+        <td><div class="bar"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+        <td><div class="bar base"><span style="width:0.0%"></span></div>0.0%</td>
+      </tr>
+      <tr>
+        <th scope="row">DIFFERENT_SURNAME<br><span class="muted">n = 320</span></th>
+        <td><div class="bar"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:99.1%"></span></div>99.1%</td>
+        <td><div class="bar base"><span style="width:98.8%"></span></div>98.8%</td>
+      </tr>
+      <tr>
+        <th scope="row">DIFFERENT_GIVEN_NAME<br><span class="muted">n = 200</span></th>
+        <td><div class="bar"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:100.0%"></span></div>100.0%</td>
+        <td><div class="bar base"><span style="width:97.5%"></span></div>97.5%</td>
+      </tr></tbody>
+  </table>
+
+  <h2>Confusion matrix (engine)</h2>
+  <table>
+    <thead><tr><th>expected ↓ / predicted →</th><th>MATCH</th><th>WARNING</th><th>CRITICAL</th><th>UNVERIFIABLE</th></tr></thead>
+    <tbody><tr><th scope="row">MATCH</th><td class="diag">467</td><td class="off">45</td><td class="off">11</td><td class="">0</td></tr><tr><th scope="row">WARNING</th><td class="">0</td><td class="diag">498</td><td class="">0</td><td class="">0</td></tr><tr><th scope="row">CRITICAL</th><td class="">0</td><td class="">0</td><td class="diag">517</td><td class="">0</td></tr><tr><th scope="row">UNVERIFIABLE</th><td class="">0</td><td class="">0</td><td class="">0</td><td class="diag">0</td></tr></tbody>
+  </table>
+
+  <h2>Thresholds in force</h2>
+  <p class="muted">From <code>lib/match/config.ts</code>:
+  jaroWinklerSpelling = 0.92 · spellingScore = 0.9 · initialScore = 0.6 · matchCoverage = 0.95 · warningCoverage = 0.5 · surnameMinScore = 0.9 · addressJaccardMin = 0.5</p>
+</body>
+</html>
