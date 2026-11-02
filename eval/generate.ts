@@ -103,7 +103,7 @@ const DEVANAGARI: Record<string, string> = {
   Bala: "बाला", Kaur: "कौर",
   Verma: "वर्मा", Sharma: "शर्मा", Gupta: "गुप्ता", Yadav: "यादव", Chaudhary: "चौधरी",
   Choudhary: "चौधरी", Mishra: "मिश्रा", Pandey: "पांडेय", Tiwari: "तिवारी",
-  Joshi: "जोशी", Chauhan: "चौहान", Rathore: "राठौर", Meena: "मीना", Nair: "नायर",
+  Joshi: "जोशी", Chauhan: "चौहान", Rathore: "राठौर", Nair: "नायर",
   Reddy: "रेड्डी", Naidu: "नायडू", Patel: "पटेल", Desai: "देसाई", Shah: "शाह",
   Bansal: "बंसल", Agarwal: "अग्रवाल", Jain: "जैन", Saini: "सैनी", Kashyap: "कश्यप",
   Thakur: "ठाकुर", Sisodia: "सिसोदिया", Malhotra: "मल्होत्रा", Kapoor: "कपूर",
