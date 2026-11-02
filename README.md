@@ -7,25 +7,6 @@ marksheet, bank passbook), extracts the key fields, lets you confirm them, then 
 them with deterministic, unit-tested code and tells you which mismatches are likely to
 get your application rejected — and how to fix each one.
 
-> Possible issues only — not a guarantee of acceptance or rejection. Some of the most
-> common rejection causes (bank account not Aadhaar-seeded, institute not verifying in
-> time) cannot be seen in documents and are shown as *UNVERIFIABLE* with instructions on
-> how to check them yourself.
-
-## Status
-
-| Milestone | State |
-|---|---|
-| M0 Scaffold | done |
-| M1 Matching engine | pending |
-| M2 Rules + remedies | pending |
-| M3 Extraction + API + fixtures | pending |
-| M4 Wizard UI | pending |
-| M5 Results + fixes | pending |
-| M6 Privacy hardening | pending |
-| M7 Eval harness | pending |
-| M8 Polish + deploy | pending |
-
 ## Requirements
 
 - Node 20+
@@ -97,10 +78,3 @@ fixtures/       synthetic demo packets
 eval/           matcher / pipeline benchmark + report.md
 tests/          unit tests
 ```
-
-## Docs
-
-- `SPEC.md` — full specification
-- `DESIGN.md` — visual and UX direction
-- `DECISIONS.md` — every open question, and the choice made
-- `AGENTS.md` — standing rules for the coding agent
